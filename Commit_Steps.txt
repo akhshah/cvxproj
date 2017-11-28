@@ -1,0 +1,7 @@
+git clone https://github.com/akhshah/cvxproj
+
+Do your work on existing files or add new ones using “git add [file name] ”
+
+git commit -am [file name]
+
+git push 
