@@ -1,0 +1,18 @@
+# Binary Objects
+*.pyc
+*.a
+*.o
+
+# LaTeX Objects
+*.aux
+*.log
+*.synctex.gz
+*.fls
+*.fdb*
+
+# Directories
+.ipynb_checkpoints/
+
+# Compressed Files
+*.zip
+*.tar*
