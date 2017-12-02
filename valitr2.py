@@ -18,8 +18,43 @@ def main():
     R = np.zeros(100)
     R[0] = 100;
     vals, bestAction = valitr(P, R, 0.5, 1e-3)
+    vals2, bestAction2 = policyitr(P, R, 0.5, 1e-3)
+    k = 2
 
-
+def policyitr(P, R, discount, eps):
+    numOfStates = P.shape[2]
+    numOfActions = P.shape[0]
+    bestActionOld =  -1*np.ones(numOfStates)
+    bestActionNew = np.random.randint(numOfActions, size=numOfStates)
+   
+    while not(np.array_equal(bestActionOld, bestActionNew)):
+        bestActionOld =np.copy(bestActionNew);
+        #constructs linear equation to find new values of states
+        A = np.zeros([numOfStates, numOfStates])
+        #if there are rewards for actions this line must be changed
+        b = R;
+        b.resize([numOfStates,1])
+        for s in xrange(numOfStates):
+            ts = discount*P[bestActionNew[s],s,:];
+            ts.resize([1,numOfStates]);
+            A[s,:] = -discount*ts;
+        #update the state values and cont
+        A = A + np.identity(numOfStates);
+        stateVals = np.linalg.solve(A,b);
+        #for each state maximize the value
+        for s in xrange(numOfStates):
+            maxVal = -np.inf;
+            bestActOfs = -1;
+            #search every action
+            for a in xrange(numOfActions):
+                successors = np.where(P[a,s,:] > 0)
+                valOfa = R[s] + discount*np.dot(np.squeeze(stateVals[successors]), np.squeeze(P[a,s,successors]))
+                if valOfa > maxVal:
+                    maxVal = valOfa;
+                    bestActOfs = a;
+            bestActionNew[s] = bestActOfs
+    return stateVals, bestActionNew      
+    
 def valitr(P, R, discount, eps):
     numOfStates = P.shape[2]
     numOfActions = P.shape[0]
