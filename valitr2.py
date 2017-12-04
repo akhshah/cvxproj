@@ -39,6 +39,31 @@ def main():
     vals3, error = interiorPoint(A, b1, 0.5,1e-3, 0.5, vals2)
     print vals3
     k = 2
+    
+def plotGridWorld(R, bestAction, Rows, Columns):
+    imgData = np.resize(R,[Rows, Columns]);
+    imgData = np.flipud(imgData);
+    print imgData
+    
+    plt.imshow(imgData, interpolation='nearest')
+    bestAction = np.resize(bestAction[Rows, Columns])
+    for a in range(Rows):
+        for b in range(Columns): 
+            if bestAction[Rows -1 - a,b]== 0:
+                plt.text(b,a ,r'$ \leftarrow $')
+            elif bestAction[Rows -1 - a,b]== 1:
+                plt.text(b,a,r'$ \rightarrow $')
+            elif bestAction[Rows -1 - a,b]== 2:
+                plt.text(b,a,r'$ \uparrow $')
+            elif bestAction[Rows -1 - a,b] == 3:
+                plt.text(b,a,r'$ \downarrow $')
+            elif bestAction[Rows -1 - a,b] == 4:
+                plt.text(b,a ,r'$ o $')
+            #plt.text(b,a,r'$ \leftarrow $')
+            
+    plt.colorbar()
+    plt.show()
+    return
 
 def findBarrierGradient(A,b,x):
     #calculates the gradient of barrier function for IPM Ax>=b
